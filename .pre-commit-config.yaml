@@ -1,0 +1,134 @@
+# To install pre-commit run the command `pip install pre-commit`
+# To initialize pre-commit run `pre-commit install`
+
+
+default_language_version:
+  python: python3.8
+
+
+files: ^src/
+
+exclude:
+  ^.git/
+  ^__pycache__/
+  ^migrations/
+
+fail_fast: true
+
+default_stages: [commit]
+
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: pretty-format-json
+        args: [
+            --autofix,
+            --indent 4,
+        ]
+      - id: trailing-whitespace
+      - id: no-commit-to-branch
+        args: [
+            --branch, dev,
+            --branch, develop,
+            --branch, master,
+        ]
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.11.0
+    hooks:
+      - id: pyupgrade
+        args: [--py37-plus]
+        types: [python]
+
+  - repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+      - id: autoflake
+        args: [
+            --in-place,
+            --remove-all-unused-imports,
+            --ignore-init-module-imports,
+            --remove-unused-variables,
+        ]
+        types: [python]
+        exclude: 'settings|migrations'
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.9.2
+    hooks:
+      - id: isort
+        name: Isort
+        additional_dependencies: [toml]
+        args: [
+            --sp=.isort.cfg
+        ]
+        stages:
+          - commit
+        types: [python]
+        exclude: 'settings|migrations'
+
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.1.0
+    hooks:
+      - id: add-trailing-comma
+        args: [--py36-plus]
+        stages:
+          - commit
+        types: [python]
+        exclude: 'settings|migrations'
+
+  - repo: https://github.com/asottile/yesqa
+    rev: v1.2.2
+    hooks:
+      - id: yesqa
+        additional_dependencies:
+          - flake8-builtins
+          - flake8-print
+          - flake8-debugger
+          - flake8-commas
+          - flake8-comprehensions
+          - flake8-eradicate
+          - flake8-django
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.0
+    hooks:
+      - id: flake8
+        args: [
+            --config=.flake8,
+            --max-line-length=120,
+        ]
+        types: [python]
+        additional_dependencies:
+          - flake8-builtins
+          - flake8-print
+          - flake8-debugger
+          - flake8-commas
+          - flake8-comprehensions
+          - flake8-eradicate
+          - flake8-django
+        exclude: 'settings|migrations'
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.910
+    hooks:
+      - id: mypy
+        types: [python]
+
+  - repo: https://github.com/milin/giticket
+    rev: v1.1
+    hooks:
+      - id: giticket
+        args: [
+            '--regex=[A-Za-z]+-?\d+',
+            '--format=[{ticket}] {commit_msg}',
+        ]

@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: pg_container
+    image: postgres:13.3-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: project-db
+    ports:
+      - "5406:5432"
