@@ -2,7 +2,7 @@ import os
 import environ
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+PROJECT_DIR = os.path.dirname(BASE_DIR)
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -34,7 +34,7 @@ THIRD_PARTY_APPS = [
 ]
 
 PROJECT_APPS = [
-
+    'core',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
